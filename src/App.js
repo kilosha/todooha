@@ -1,64 +1,35 @@
-import React from 'react';
-import { List } from 'antd';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useContext } from 'react';
+import { List, ConfigProvider, Empty } from 'antd';
 
 import TaskItem from './components/TaskItem';
 import EditTaskItem from './components/EditTaskItem';
 import Header from './components/Header';
 
+import TasksContext from './contexts/TasksContext.js';
+
 import './App.css';
 
 function App() {
-    const [data, setData] = React.useState([
-        { title: "Купить гвозди 🔨", id: "ea6abbd7-eb68-4ee0-b352-23721c84c1f2", isCompleted: true },
-        { title: "Сделать домашку по React", id: "0b480ff3-64bd-42d3-9318-f728cc1d62dd", isCompleted: true },
-        { title: "Защитить чек-лист", id: " bae6bb59-5c22-42f5-8f4c-1fc8d9877a5d", isCompleted: false },
-        { title: "Переехать в США", id: "e7f723f0-867c-4184-bdbf-7774faea5ec5", isCompleted: false }
-    ]);
-
+    const { tasks } = useContext(TasksContext);
     const [editId, setEditId] = React.useState('');
-
-    const addNewTask = (task) => {
-        setData(tasks => [...tasks, { title: task, id: uuidv4() }]);
-    }
-
-    const handleEditTaskClick = (id) => {
-        setEditId(id);
-    }
-
-    const handleDeleteTaskClick = (id) => {
-        setData(data => data.filter(task => task.id !== id));
-    }
-
-    const updateTask = (id, newText) => {
-        setData(data => data.map(task =>
-            task.id === id ? { ...task, title: newText } : task
-        ));
-        setEditId('');
-    }
-
-    const completeTask = (id) => {
-        setData(data => data.map(task =>
-            task.id === id ? { ...task, isCompleted: !task.isCompleted } : task
-        ));
-    }
 
     return (
         <div className="App">
-            <List
-                className='tasksList'
-                header={<Header addNewTask={addNewTask} />}
-                bordered
-                dataSource={data}
-                renderItem={(item) => (
-                    <List.Item key={item.id + item.isCompleted}>
-                        {item.id !== editId ?
-                            <TaskItem title={item.title} id={item.id} handleEditTaskClick={handleEditTaskClick} handleDeleteTaskClick={handleDeleteTaskClick} isCompleted={item.isCompleted} completeTask={completeTask} />
-                            : <EditTaskItem title={item.title} id={item.id} updateTask={updateTask} setEditId={setEditId} />}
-                    </List.Item>
-                )}
-            />
-
+            <ConfigProvider renderEmpty={() => <Empty description={<p className="emptyListText">Set a new challenge using the input above!</p>} />}>
+                <List
+                    className='tasksList'
+                    header={<Header />}
+                    bordered
+                    dataSource={tasks}
+                    renderItem={(task) => (
+                        <List.Item key={task.id + task.isCompleted}>
+                            {task.id !== editId ?
+                                <TaskItem title={task.title} id={task.id} setEditId={setEditId} isCompleted={task.isCompleted} />
+                                : <EditTaskItem title={task.title} id={task.id} setEditId={setEditId} />}
+                        </List.Item>
+                    )}
+                />
+            </ConfigProvider>
         </div>
     );
 }

@@ -1,26 +1,27 @@
-import React from 'react';
-import { Button, Input, Space } from 'antd';
+import React, { useContext } from 'react';
+import { Input, Space } from 'antd';
 
-const TaskInput = ({ addNewTask }) => {
+import TasksContext from '../contexts/TasksContext.js';
+import MyButton from './MyButton.jsx';
+
+const TaskInput = () => {
     const [task, setTask] = React.useState('');
+    const { addNewTask } = useContext(TasksContext);
 
     const setNewTask = (e) => {
         setTask(e.target.value);
     };
 
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            if (task.trim()) {
-                addNewTask(task.trim());
-                setTask('');
-            }
-        }
-    };
-
-    const addTask = () => {
+    const checkAndAddTask = () => {
         if (task.trim()) {
             addNewTask(task.trim());
             setTask('');
+        }
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            checkAndAddTask();
         }
     };
 
@@ -33,9 +34,7 @@ const TaskInput = ({ addNewTask }) => {
                     onKeyDown={handleKeyDown}
                     placeholder="What do you need to do?"
                 />
-                <Button type="primary" onClick={addTask} disabled={!task.trim()}>
-                    Add Task
-                </Button>
+                <MyButton handleBtnClick={checkAndAddTask} disabled={!task.trim()} />
             </Space.Compact>
         </div>
     );

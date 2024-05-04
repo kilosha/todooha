@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash, faSquareCheck, faSquare } from '@fortawesome/free-solid-svg-icons';
 
-const TaskItem = ({
-    title,
-    handleEditTaskClick,
-    handleDeleteTaskClick,
-    id,
-    isCompleted,
-    completeTask,
-}) => {
+import TasksContext from '../contexts/TasksContext.js';
+
+const TaskItem = ({ title, id, isCompleted, setEditId }) => {
+    const { completeTask, deleteTask } = useContext(TasksContext);
+
+    const handleEditTaskClick = (id) => {
+        setEditId(id);
+    };
+
+    const handleDeleteTaskClick = (id) => {
+        deleteTask(id);
+    };
+
     return (
         <>
             <FontAwesomeIcon
@@ -18,7 +23,7 @@ const TaskItem = ({
                 icon={isCompleted ? faSquareCheck : faSquare}
                 onClick={() => completeTask(id)}
             />
-            
+
             <Typography.Text
                 className="taskText"
                 delete={isCompleted}

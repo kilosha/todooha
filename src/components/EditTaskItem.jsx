@@ -1,26 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileCircleCheck, faFileCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
-const EditTaskItem = ({ title, id, updateTask, setEditId }) => {
+import TasksContext from '../contexts/TasksContext.js';
+
+const EditTaskItem = ({ title, id, setEditId }) => {
     const [taskText, setTaskText] = React.useState(title);
+    const { updateTask } = useContext(TasksContext);
 
     const updateTaskText = (e) => {
         setTaskText(e.target.value);
     };
 
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter' && taskText.trim()) {
-            updateTask(id, taskText.trim());
+        if (event.key === 'Enter') {
+            checkAndUpdateTask();
         } else if (event.key === 'Escape') {
             setEditId('');
         }
     };
 
-    const handleSaveClick = () => {
+    const checkAndUpdateTask = () => {
         if (taskText.trim()) {
             updateTask(id, taskText.trim());
+            setEditId('');
         }
     };
 
@@ -43,7 +47,7 @@ const EditTaskItem = ({ title, id, updateTask, setEditId }) => {
                     icon={faFileCircleCheck}
                     className="icon leftIcon"
                     beat
-                    onClick={handleSaveClick}
+                    onClick={checkAndUpdateTask}
                 />
                 <FontAwesomeIcon
                     icon={faFileCircleXmark}

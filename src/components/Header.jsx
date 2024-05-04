@@ -1,13 +1,12 @@
 import React from 'react';
+
 import TaskInput from './TaskInput';
 
-const Header = ({ addNewTask }) => {
+const Header = () => {
     return (
         <>
-            <h2 className="headerTitle" >
-                Get things done!
-            </h2>
-            <TaskInput addNewTask={addNewTask} />
+            <h2 className="headerTitle">Get things done!</h2>
+            <TaskInput />
         </>
     );
 };

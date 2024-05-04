@@ -16,7 +16,7 @@ body {
 }
 
 .headerTitle {
-    text-align: 'center';
+    text-align: center;
 }
 
 .tasksList {
@@ -56,4 +56,8 @@ body {
     color: white;
     cursor: pointer;
     padding: 0px 15px;
+}
+
+.emptyListText {
+    color: white;
 }
