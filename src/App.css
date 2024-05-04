@@ -1,5 +1,7 @@
 body {
     margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .App {
@@ -10,4 +12,48 @@ body {
     background: url('./assets/img.jpg') no-repeat;
     background-size: cover;
     background-position: center;
+    width: 100%;
+}
+
+.headerTitle {
+    text-align: 'center';
+}
+
+.tasksList {
+    width: 30%;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(125, 9, 174, 0.612);
+    color: white;
+    border-radius: 10px;
+    padding: 3px 4px;
+}
+
+.icon {
+    cursor: pointer;
+    color: white;
+}
+
+.leftIcon {
+    margin-right: 6px;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.editTaskInput {
+    width: 89%;
+}
+
+.configIcons {
+    display: flex;
+    width: 37.5px;
+}
+
+.taskText {
+    color: white;
+    cursor: pointer;
+    padding: 0px 15px;
 }

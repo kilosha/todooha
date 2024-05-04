@@ -11,10 +11,10 @@ const EditTaskItem = ({ title, id, updateTask, setEditId }) => {
     };
 
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            if (taskText.trim()) {
-                updateTask(id, taskText.trim());
-            }
+        if (event.key === 'Enter' && taskText.trim()) {
+            updateTask(id, taskText.trim());
+        } else if (event.key === 'Escape') {
+            setEditId('');
         }
     };
 
@@ -31,21 +31,23 @@ const EditTaskItem = ({ title, id, updateTask, setEditId }) => {
     return (
         <>
             <Input
-                style={{ width: '85%' }}
                 value={taskText}
                 onChange={(e) => updateTaskText(e)}
                 onKeyDown={handleKeyDown}
-                autoFocus={true}></Input>
-            <div style={{ display: 'flex' }}>
+                autoFocus={true}
+                className="editTaskInput"
+            />
+
+            <div className="configIcons">
                 <FontAwesomeIcon
                     icon={faFileCircleCheck}
-                    style={{ marginRight: '6px', cursor: 'pointer' }}
+                    className="icon leftIcon"
                     beat
                     onClick={handleSaveClick}
                 />
                 <FontAwesomeIcon
                     icon={faFileCircleXmark}
-                    style={{ cursor: 'pointer' }}
+                    className="icon"
                     onClick={handleCancelClick}
                 />
             </div>

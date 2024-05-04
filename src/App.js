@@ -46,25 +46,12 @@ function App() {
     return (
         <div className="App">
             <List
-                style={{
-                    width: '420px',
-                    backgroundColor: 'transparent',
-                    border: '2px solid rgba(255, 255, 255, .2)',
-                    backdropFilter: 'blur(20px)', // Не работает на сафари(
-                    boxShadow: '0 0 10px rgba(125, 9, 174, 0.612)',
-                    color: 'white',
-                    borderRadius: '10px',
-                    padding: '3px 4px'
-                }}
+                className='tasksList'
                 header={<Header addNewTask={addNewTask} />}
                 bordered
                 dataSource={data}
                 renderItem={(item) => (
-                    <List.Item style={{
-                        color: 'white',
-                        display: 'flex',
-                        justifyContent: 'space-between'
-                    }} key={item.id + item.isCompleted}>
+                    <List.Item key={item.id + item.isCompleted}>
                         {item.id !== editId ?
                             <TaskItem title={item.title} id={item.id} handleEditTaskClick={handleEditTaskClick} handleDeleteTaskClick={handleDeleteTaskClick} isCompleted={item.isCompleted} completeTask={completeTask} />
                             : <EditTaskItem title={item.title} id={item.id} updateTask={updateTask} setEditId={setEditId} />}

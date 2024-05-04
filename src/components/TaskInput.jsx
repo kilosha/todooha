@@ -4,7 +4,6 @@ import { Button, Input, Space } from 'antd';
 const TaskInput = ({ addNewTask }) => {
     const [task, setTask] = React.useState('');
 
-    // alert('rerender');
     const setNewTask = (e) => {
         setTask(e.target.value);
     };
@@ -27,10 +26,7 @@ const TaskInput = ({ addNewTask }) => {
 
     return (
         <div>
-            <Space.Compact
-                style={{
-                    width: '100%',
-                }}>
+            <Space.Compact className="fullWidth">
                 <Input
                     value={task}
                     onChange={(e) => setNewTask(e)}

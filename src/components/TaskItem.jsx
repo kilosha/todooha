@@ -13,26 +13,27 @@ const TaskItem = ({
 }) => {
     return (
         <>
-            {isCompleted ? (
-                <FontAwesomeIcon icon={faSquareCheck} onClick={() => completeTask(id)} />
-            ) : (
-                <FontAwesomeIcon icon={faSquare} onClick={() => completeTask(id)} />
-            )}
-
+            <FontAwesomeIcon
+                className="icon"
+                icon={isCompleted ? faSquareCheck : faSquare}
+                onClick={() => completeTask(id)}
+            />
+            
             <Typography.Text
-                style={{ color: 'white', cursor: 'pointer' }}
+                className="taskText"
                 delete={isCompleted}
                 onClick={() => completeTask(id)}>
                 {title}
             </Typography.Text>
-            <div style={{ display: 'flex' }}>
+
+            <div className="configIcons">
                 <FontAwesomeIcon
-                    style={{ marginRight: '6px', cursor: 'pointer' }}
+                    className="icon leftIcon"
                     icon={faPenToSquare}
                     onClick={() => handleEditTaskClick(id)}
                 />
                 <FontAwesomeIcon
-                    style={{ cursor: 'pointer' }}
+                    className="icon"
                     icon={faTrash}
                     onClick={() => handleDeleteTaskClick(id)}
                 />
