@@ -13,8 +13,9 @@ const TaskInput = () => {
     };
 
     const checkAndAddTask = () => {
-        if (task.trim()) {
-            addNewTask(task.trim());
+        const formattedTask = task.trim();
+        if (formattedTask) {
+            addNewTask(formattedTask);
             setTask('');
         }
     };

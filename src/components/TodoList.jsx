@@ -28,12 +28,7 @@ const TodoList = () => {
                 renderItem={(task) => (
                     <List.Item key={task.id + task.isCompleted}>
                         {task.id !== editId ? (
-                            <TaskItem
-                                title={task.title}
-                                id={task.id}
-                                setEditId={setEditId}
-                                isCompleted={task.isCompleted}
-                            />
+                            <TaskItem {...task} setEditId={setEditId} />
                         ) : (
                             <EditTaskItem title={task.title} id={task.id} setEditId={setEditId} />
                         )}

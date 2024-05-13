@@ -22,8 +22,9 @@ const EditTaskItem = ({ title, id, setEditId }) => {
     };
 
     const checkAndUpdateTask = () => {
-        if (taskText.trim()) {
-            updateTask(id, taskText.trim());
+        const formattedTaskText = taskText.trim();
+        if (formattedTaskText) {
+            updateTask(id, formattedTaskText);
             setEditId('');
         }
     };
