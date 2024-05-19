@@ -2,7 +2,7 @@ import React from 'react';
 import { TinyColor } from '@ctrl/tinycolor';
 import { Button, ConfigProvider } from 'antd';
 
-const btnColors = ['rgba(17,9,157,1)', 'rgba(87,33,189,1)', 'rgba(134,26,145,1)'];
+const btnColors = ['rgba(17,9,157,1)', 'rgba(87,33,189,1)', 'rgb(134, 26, 145)'];
 
 const getHoverColors = (colors) =>
     colors.map((color) => new TinyColor(color).lighten(5).toString());
@@ -11,7 +11,7 @@ const getActiveColors = (colors) =>
 const getDisabledColors = (colors) =>
     colors.map((color) => new TinyColor(color).brighten(10).toString());
 
-const MyButton = ({ handleBtnClick, disabled }) => (
+const MyButton = ({ handleBtnClick, disabled, btnText, ...other }) => (
     <ConfigProvider
         theme={{
             components: {
@@ -31,8 +31,8 @@ const MyButton = ({ handleBtnClick, disabled }) => (
                 },
             },
         }}>
-        <Button type="primary" size="large" onClick={handleBtnClick} disabled={disabled}>
-            Add Task
+        <Button type="primary" size="large" onClick={handleBtnClick} disabled={disabled} {...other}>
+            {btnText}
         </Button>
     </ConfigProvider>
 );

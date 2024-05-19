@@ -35,7 +35,7 @@ const TaskInput = () => {
                     onKeyDown={handleKeyDown}
                     placeholder="What do you need to do?"
                 />
-                <MyButton handleBtnClick={checkAndAddTask} disabled={!task.trim()} />
+                <MyButton handleBtnClick={checkAndAddTask} disabled={!task.trim()} btnText={"Add Task"}/>
             </Space.Compact>
         </div>
     );

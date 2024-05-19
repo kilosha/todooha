@@ -1,11 +1,12 @@
 import React from 'react';
 
 import TaskInput from './TaskInput';
+import MyTitle from './MyTitle';
 
 const Header = () => {
     return (
         <>
-            <h2 className="headerTitle">Get things done!</h2>
+            <MyTitle title={'Get things done!'} />
             <TaskInput />
         </>
     );
