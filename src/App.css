@@ -30,6 +30,16 @@ body {
     padding: 3px 4px;
 }
 
+.registrationForm {
+    width: 40%;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(125, 9, 174, 0.612);
+    border-radius: 10px;
+    padding: 3px 4px;
+}
+
 .icon {
     cursor: pointer;
     color: white;
@@ -59,5 +69,9 @@ body {
 }
 
 .emptyListText {
+    color: white;
+}
+
+.formText {
     color: white;
 }
