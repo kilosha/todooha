@@ -1,5 +1,6 @@
 import React from 'react';
-import { ConfigProvider, Checkbox, Form, Input, Segmented, InputNumber, Typography } from 'antd';
+import axios from 'axios';
+import { ConfigProvider, Form, Input, Segmented, InputNumber, Typography } from 'antd';
 import { useForm } from 'react-hook-form';
 import { FormItem } from 'react-hook-form-antd';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,46 +9,73 @@ import * as z from 'zod';
 import MyTitle from './MyTitle';
 import MyButton from './MyButton';
 
-const schema = z.object({
-    username: z
-        .string()
-        .trim()
-        .min(1, { message: 'Required' })
-        .regex(/^\S+$/, 'Spaces not allowed')
-        .max(10, { message: 'Username should be less than 10 characters' }),
-    email: z.string().trim().email('Please provide a valid email'),
-    password: z
-        .string()
-        .trim()
-        .min(1, { message: 'Required' })
-        .min(8, { message: 'Password should contain at least 8 characters' })
-        .regex(
-            /(?=.*[0-9])(?=.*[!@#$%^&_\-*])(?=.*[a-z])(?=.*[A-Z])^[a-zA-Z\d!@\-#$%^&_*]+$/,
-            'Password should contain at least 1 uppercase letter, 1 lowercase letter, 1 symbol (!@#$%^&_-*) and 1 number, spaces not allowed',
-        ),
-    age: z.number().min(10, 'You should be at least 10 years old'),
-    gender: z.enum(['Female', 'Male']),
-});
+const schema = z
+    .object({
+        username: z
+            .string()
+            .trim()
+            .min(1, { message: 'Required' })
+            .regex(/^\S+$/, 'Spaces not allowed')
+            .max(15, { message: 'Username should be less than 15 characters' }),
+        email: z.string().trim().email('Please provide a valid email'),
+        password: z
+            .string()
+            .trim()
+            .min(1, { message: 'Required' })
+            .min(8, { message: 'Password should contain at least 8 characters' })
+            .regex(
+                /(?=.*[0-9])(?=.*[!@#$%^&_\-*])(?=.*[a-z])(?=.*[A-Z])^[a-zA-Z\d!@\-#$%^&_*]+$/,
+                'Password should contain at least 1 uppercase letter, 1 lowercase letter, 1 symbol (!@#$%^&_-*) and 1 number, spaces not allowed',
+            ),
+        age: z
+            .number()
+            .min(10, 'You should be at least 10 years old')
+            .max(100, 'Values greater than 100 are not allowed'),
+        gender: z.enum(['female', 'male']),
+        confirmedPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmedPassword, {
+        message: 'The password that you entered do not match!',
+        path: ['confirmedPassword'],
+    });
 
 const RegistrationForm = () => {
-    const { control, handleSubmit } = useForm({
-        defaultValues: { gender: 'Male' },
+    const [requestSuccessfull, setRequestSuccessfull] = React.useState(false);
+
+    const {
+        control,
+        handleSubmit,
+        reset,
+        formState: { isDirty, isValid },
+    } = useForm({
+        mode: 'onChange',
+        defaultValues: { gender: 'male' },
         resolver: zodResolver(schema),
     });
 
     const onFinish = (values) => {
-        alert('Great!');
-        console.log('Success:', values);
+        const { confirmedPassword, ...newUser } = values;
+
+        console.log(newUser);
+
+        axios
+            .post(`${process.env.REACT_APP_BACKEND_URL}/users/register`, newUser)
+            .then(function (response) {
+                setRequestSuccessfull(true);
+            })
+            .catch(function (error) {
+                alert('Something went wrong :(');
+                console.log(error);
+            });
     };
 
-
-    // TODO:
-    // проверка совпадения паролей
-    // сделать "живую" логику с запросом на бек и получением ответа
-    // дальше перейти к login form
-    // хранить в LocalStorage token
-
-    // после создания обеих страниц сделать приватные и общедоступные роуты и навигацию по тексту под формами
+    React.useEffect(() => {
+        if (requestSuccessfull) {
+            alert('User registered successfully');
+            reset({ gender: 'male' });
+            setRequestSuccessfull(false);
+        }
+    }, [requestSuccessfull, reset]);
 
     return (
         <div className="registrationForm">
@@ -85,43 +113,101 @@ const RegistrationForm = () => {
                     }}
                     onFinish={handleSubmit(onFinish)}
                     autoComplete="off"
-                    labelCol={{ span: 6 }}
+                    labelCol={{ span: 7 }}
                     wrapperCol={{
                         span: 14,
-                    }}>
-                    <FormItem control={control} label="Username" name="username" required>
+                    }}
+                    colon={false}>
+                    <FormItem
+                        control={control}
+                        label="Username"
+                        name="username"
+                        required
+                        rules={[
+                            () => ({
+                                validator(_, value) {
+                                    const re = /^\S*$/;
+                                    if (value === '' || re.test(value)) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error('Whitespaces are not allowed'));
+                                },
+                            }),
+                        ]}>
                         <Input placeholder="marry22" />
-                    </FormItem>
-
-                    <FormItem control={control} label="Email" name="email" required>
-                        <Input placeholder="example@example.com" />
-                    </FormItem>
-
-                    <FormItem control={control} label="Password" name="password" required>
-                        <Input.Password placeholder="Il0veR3d3v" />
                     </FormItem>
 
                     <FormItem
                         control={control}
+                        label="Email"
+                        name="email"
+                        required
+                        rules={[
+                            () => ({
+                                validator(_, value) {
+                                    const re = /^\S*$/;
+                                    if (value === '' || re.test(value)) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error('Whitespaces are not allowed'));
+                                },
+                            }),
+                        ]}>
+                        <Input placeholder="example@example.com" />
+                    </FormItem>
+
+                    <FormItem
+                        hasFeedback
+                        control={control}
+                        label="Password"
+                        name="password"
+                        required
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please confirm your password!',
+                            },
+                        ]}>
+                        <Input.Password placeholder="Il0veR3d3v" />
+                    </FormItem>
+
+                    <FormItem
+                        hasFeedback
+                        control={control}
                         label="Confirm Password"
                         name="confirmedPassword"
-                        required>
+                        required
+                        dependencies={['password']}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please confirm your password!',
+                            },
+                        ]}>
                         <Input.Password placeholder="Il0veR3d3v" />
                     </FormItem>
 
                     <FormItem control={control} label="Gender" name="gender" required>
                         <Segmented
-                            options={['Male', 'Female']}
-                            onChange={(value) => {
-                                console.log(value); // string
-                            }}
+                            options={[
+                                { label: 'Male', value: 'male' },
+                                { label: 'Female', value: 'female' },
+                            ]}
                         />
                     </FormItem>
 
-                    <FormItem control={control} label="Age" name="age" required>
+                    <FormItem
+                        control={control}
+                        label="Age"
+                        name="age"
+                        required
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please confirm your password!',
+                            },
+                        ]}>
                         <InputNumber
-                            min={0}
-                            max={100}
                             changeOnWheel
                             placeholder="27"
                             style={{
@@ -141,6 +227,7 @@ const RegistrationForm = () => {
                             htmlType="submit"
                             btnText={'Sign Up'}
                             style={{ width: '100%' }}
+                            disabled={!isDirty || !isValid}
                         />
                     </Form.Item>
 
