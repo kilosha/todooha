@@ -8,7 +8,7 @@ import Header from './Header';
 import TasksContext from '../contexts/TasksContext.js';
 
 const TodoList = () => {
-    const { tasks } = useContext(TasksContext);
+    const { tasks, isTasksLoading } = useContext(TasksContext);
     const [editId, setEditId] = React.useState('');
 
     return (
@@ -22,6 +22,7 @@ const TodoList = () => {
             )}>
             <List
                 className="tasksList"
+                loading={isTasksLoading}
                 header={<Header />}
                 bordered
                 dataSource={tasks}

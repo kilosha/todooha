@@ -5,6 +5,7 @@ import TasksContext from '../contexts/TasksContext.js';
 
 const TasksProvider = ({ children }) => {
     const [tasks, setTasks] = React.useState([]);
+    const [isTasksLoading, setIsTasksLoading] = React.useState(false);
 
     const addNewTask = (task) => {
         axios
@@ -84,6 +85,7 @@ const TasksProvider = ({ children }) => {
     }
 
     useEffect(() => {
+        setIsTasksLoading(true);
         axios
             .get(`${process.env.REACT_APP_BACKEND_URL}/todos`, {
                 headers: {
@@ -96,11 +98,11 @@ const TasksProvider = ({ children }) => {
             .catch(function (error) {
                 alert('Something went wrong :(');
                 console.log(error);
-            });
+            }).finally(() => setIsTasksLoading(false));
     }, [])
 
     return (
-        <TasksContext.Provider value={{ tasks, addNewTask, deleteTask, updateTask, completeTask }}>
+        <TasksContext.Provider value={{ tasks, addNewTask, deleteTask, updateTask, completeTask, isTasksLoading }}>
             {children}
         </TasksContext.Provider>
     )

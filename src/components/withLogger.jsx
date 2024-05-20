@@ -26,9 +26,13 @@ const withLogger = (WrappedComponent) => {
                         return task.id !== tasks[ind]?.id;
                     }).title;
                     console.log(`Пользователь удалил задачу ${deletedTaskText}`);
-                } else if (ref.current.length < tasks.length) {
+                } else if (ref.current.length && ref.current.length + 1 === tasks.length) {
                     console.log(
                         `Пользователь добавил новую задачу ${tasks[tasks.length - 1].title}`,
+                    );
+                } else if (ref.current.length + 1 === tasks.length) {
+                    console.log(
+                        `У пользователя 1 задача ${tasks[tasks.length - 1].title}`,
                     );
                 }
             }
