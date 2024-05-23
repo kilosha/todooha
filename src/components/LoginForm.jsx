@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ConfigProvider, Form, Input, Typography, Checkbox } from 'antd';
 import { useForm } from 'react-hook-form';
@@ -14,8 +15,9 @@ const schema = z.object({
     password: z.string().trim().min(1, { message: 'Required' }),
 });
 
-const RegistrationForm = () => {
+const LoginForm = () => {
     const [requestSuccessfull, setRequestSuccessfull] = React.useState(false);
+    const navigate = useNavigate();
 
     const {
         control,
@@ -34,9 +36,9 @@ const RegistrationForm = () => {
             .post(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, values)
             .then(function (response) {
                 setRequestSuccessfull(true);
+                localStorage.setItem('token', response.data.token);
+                navigate('/todooha/todos');
                 //if remember true set to localStorage, else to sessionStorage
-                //localStorage.setItem('token', response.data.token)
-                //navigateTo todos
             })
             .catch(function (error) {
                 alert('Something went wrong :(');
@@ -155,11 +157,16 @@ const RegistrationForm = () => {
                         <Typography.Text strong className="formText" style={{ fontSize: '16px' }}>
                             Don't have an account?{' '}
                         </Typography.Text>
-                        <Typography.Link
-                            style={{ fontSize: '16px', fontWeight: 600 }}
-                            href="https://ant.design">
+                        <Link
+                            to="/todooha/register"
+                            component={Typography.Link}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 600,
+                                textDecoration: 'underline',
+                            }}>
                             Sign Up!
-                        </Typography.Link>
+                        </Link>
                     </Form.Item>
                 </Form>
             </ConfigProvider>
@@ -167,4 +174,4 @@ const RegistrationForm = () => {
     );
 };
 
-export default RegistrationForm;
+export default LoginForm;

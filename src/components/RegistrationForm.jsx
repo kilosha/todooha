@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ConfigProvider, Form, Input, Segmented, InputNumber, Typography } from 'antd';
 import { useForm } from 'react-hook-form';
@@ -41,6 +42,7 @@ const schema = z
 
 const RegistrationForm = () => {
     const [requestSuccessfull, setRequestSuccessfull] = React.useState(false);
+    const navigate = useNavigate();
 
     const {
         control,
@@ -74,8 +76,9 @@ const RegistrationForm = () => {
             alert('User registered successfully');
             reset({ gender: 'male' });
             setRequestSuccessfull(false);
+            navigate('/todooha/login');
         }
-    }, [requestSuccessfull, reset]);
+    }, [requestSuccessfull, reset, navigate]);
 
     return (
         <div className="registrationForm">
@@ -239,11 +242,16 @@ const RegistrationForm = () => {
                         <Typography.Text strong className="formText" style={{ fontSize: '16px' }}>
                             Already have an account?{' '}
                         </Typography.Text>
-                        <Typography.Link
-                            style={{ fontSize: '16px', fontWeight: 600 }}
-                            href="https://ant.design">
+                        <Link
+                            to="/todooha/login"
+                            component={Typography.Link}
+                            style={{
+                                fontSize: '16px',
+                                fontWeight: 600,
+                                textDecoration: 'underline',
+                            }}>
                             Log In!
-                        </Typography.Link>
+                        </Link>
                     </Form.Item>
                 </Form>
             </ConfigProvider>

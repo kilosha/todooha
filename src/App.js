@@ -1,17 +1,24 @@
 import React from 'react';
+import { Routes, Route, Outlet } from 'react-router-dom';
 
-import TodoList from './components/TodoList';
-import withLogger from './components/withLogger';
+import RegistrationForm from './components/RegistrationForm';
+import LoginForm from './components/LoginForm';
+import PrivateRoute from './components/PrivateRoute';
+import TodosPage from './components/TodosPage';
 
 import './App.css';
 
 
 function App() {
-    const LoggedTodoList = withLogger(TodoList);
 
     return (
         <div className="App">
-            <LoggedTodoList />
+            <Routes>
+                <Route path="/todooha/todos" element={<PrivateRoute><TodosPage /></PrivateRoute>} />
+                <Route path="/todooha/login" element={<LoginForm />} />
+                <Route path="/todooha/register" element={<RegistrationForm />} />
+            </Routes>
+            <Outlet />
         </div>
     );
 }
