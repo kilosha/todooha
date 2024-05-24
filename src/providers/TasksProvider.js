@@ -8,12 +8,16 @@ const TasksProvider = ({ children }) => {
     const [isTasksLoading, setIsTasksLoading] = React.useState(false);
 
     const addNewTask = (task) => {
+        const sToken = sessionStorage.getItem('token') || localStorage.getItem('token');
+
+        setIsTasksLoading(true);
+
         axios
             .post(`${process.env.REACT_APP_BACKEND_URL}/todos`,
                 { title: task },
                 {
                     headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                        'Authorization': 'Bearer ' + sToken,
                     }
                 }
             )
@@ -23,15 +27,19 @@ const TasksProvider = ({ children }) => {
             .catch(function (error) {
                 alert('Something went wrong :(');
                 console.log(error);
-            });
+            }).finally(() => setIsTasksLoading(false));
     }
 
     const deleteTask = (id) => {
+        const sToken = sessionStorage.getItem('token') || localStorage.getItem('token');
+
+        setIsTasksLoading(true);
+
         axios
             .delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${id}`,
                 {
                     headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                        Authorization: 'Bearer ' + sToken,
                     }
                 }
             )
@@ -41,15 +49,19 @@ const TasksProvider = ({ children }) => {
             .catch(function (error) {
                 alert('Something went wrong :(');
                 console.log(error);
-            });
+            }).finally(() => setIsTasksLoading(false));
     }
 
     const updateTask = (id, newText) => {
+        const sToken = sessionStorage.getItem('token') || localStorage.getItem('token');
+
+        setIsTasksLoading(true);
+
         axios
             .patch(`${process.env.REACT_APP_BACKEND_URL}/todos/${id}`, { title: newText },
                 {
                     headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                        Authorization: 'Bearer ' + sToken,
                     }
                 }
             )
@@ -61,15 +73,19 @@ const TasksProvider = ({ children }) => {
             .catch(function (error) {
                 alert('Something went wrong :(');
                 console.log(error);
-            });
+            }).finally(() => setIsTasksLoading(false));
     }
 
     const completeTask = (id) => {
+        const sToken = sessionStorage.getItem('token') || localStorage.getItem('token');
+
+        setIsTasksLoading(true);
+
         axios
             .patch(`${process.env.REACT_APP_BACKEND_URL}/todos/${id}/isCompleted`, undefined,
                 {
                     headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                        Authorization: 'Bearer ' + sToken,
                     }
                 }
             )
@@ -81,15 +97,18 @@ const TasksProvider = ({ children }) => {
             .catch(function (error) {
                 alert('Something went wrong :(');
                 console.log(error);
-            });
+            }).finally(() => setIsTasksLoading(false));
     }
 
     useEffect(() => {
+        const sToken = sessionStorage.getItem('token') || localStorage.getItem('token');
+
         setIsTasksLoading(true);
+
         axios
             .get(`${process.env.REACT_APP_BACKEND_URL}/todos`, {
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + sToken
                 }
             })
             .then(function (response) {

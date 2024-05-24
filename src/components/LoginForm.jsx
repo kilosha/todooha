@@ -25,10 +25,12 @@ const LoginForm = () => {
         control,
         handleSubmit,
         reset,
+        getValues,
         formState: { isDirty, isValid },
     } = useForm({
         mode: 'onChange',
         resolver: zodResolver(schema),
+        defaultValues: { remember: false },
     });
 
     const onFinish = (values) => {
@@ -40,9 +42,14 @@ const LoginForm = () => {
             .post(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, values)
             .then(function (response) {
                 setRequestSuccessfull(true);
-                localStorage.setItem('token', response.data.token);
+
+                if (getValues('remember')) {
+                    localStorage.setItem('token', response.data.token);
+                } else {
+                    sessionStorage.setItem('token', response.data.token);
+                }
+
                 navigate('/todooha');
-                //if remember true set to localStorage, else to sessionStorage
             })
             .catch(function (error) {
                 const errMessage =
@@ -89,9 +96,6 @@ const LoginForm = () => {
                 <Form
                     name="basic"
                     className="form"
-                    initialValues={{
-                        remember: true,
-                    }}
                     onFinish={handleSubmit(onFinish)}
                     autoComplete="off"
                     labelCol={{ span: 7 }}
@@ -133,7 +137,14 @@ const LoginForm = () => {
                         <Input.Password placeholder="Il0veR3d3v" />
                     </FormItem>
 
-                    <FormItem control={control} name="remember" valuePropName="checked">
+                    <FormItem
+                        control={control}
+                        name="remember"
+                        valuePropName="checked"
+                        wrapperCol={{
+                            span: 14,
+                            offset: 7,
+                        }}>
                         <Checkbox>Remember me</Checkbox>
                     </FormItem>
 

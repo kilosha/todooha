@@ -12,6 +12,7 @@ const TodosPage = () => {
 
     const handleLogoutPress = () => {
         localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
     };
 
     return (
@@ -21,7 +22,7 @@ const TodosPage = () => {
                 to="/todooha/login"
                 onClick={handleLogoutPress}
                 component={Typography.Link}
-                className='logoutLink'>
+                className="logoutLink">
                 Log out
             </Link>
         </TasksProvider>

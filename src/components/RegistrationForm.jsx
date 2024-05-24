@@ -108,9 +108,6 @@ const RegistrationForm = () => {
                 <Form
                     name="basic"
                     className="form"
-                    initialValues={{
-                        remember: true,
-                    }}
                     onFinish={handleSubmit(onFinish)}
                     autoComplete="off"
                     labelCol={{ span: 7 }}
