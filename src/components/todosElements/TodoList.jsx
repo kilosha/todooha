@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { List, ConfigProvider, Empty } from 'antd';
+import { List, ConfigProvider, Empty, Alert } from 'antd';
 
 import TaskItem from './TaskItem.jsx';
 import EditTaskItem from './EditTaskItem.jsx';
@@ -8,8 +8,10 @@ import Header from './Header.jsx';
 import TasksContext from '../../contexts/TasksContext.js';
 
 const TodoList = () => {
-    const { tasks, isTasksLoading } = useContext(TasksContext);
+    const { tasks, isTasksLoading, error, setError } = useContext(TasksContext);
     const [editId, setEditId] = React.useState('');
+
+    const handleErrorClose = () => setError('');
 
     return (
         <ConfigProvider
@@ -19,7 +21,19 @@ const TodoList = () => {
                         <p className="emptyListText">Set a new challenge using the input above!</p>
                     }
                 />
-            )}>
+            )}
+            theme={{
+                components: {
+                    Pagination: {
+                        itemActiveBg: '#7534ee',
+                        colorPrimary: '#eeeeee',
+                        colorPrimaryBorder: 'rgba(87, 33, 189, 1)',
+                        colorPrimaryHover: 'rgba(87, 33, 189, 1)',
+                        colorText: 'white',
+                        colorTextDisabled: 'rgba(221, 221, 221, 0.25)',
+                    },
+                },
+            }}>
             <List
                 className="tasksList"
                 loading={isTasksLoading}
@@ -35,6 +49,21 @@ const TodoList = () => {
                         )}
                     </List.Item>
                 )}
+                pagination={{
+                    pageSize: 3,
+                    align: 'center',
+                }}
+                footer={
+                    error && (
+                        <Alert
+                            message="Something went wrong:("
+                            description={error}
+                            type="error"
+                            closable
+                            onClose={handleErrorClose}
+                        />
+                    )
+                }
             />
         </ConfigProvider>
     );

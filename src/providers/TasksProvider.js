@@ -6,11 +6,13 @@ import TasksContext from '../contexts/TasksContext.js';
 const TasksProvider = ({ children }) => {
     const [tasks, setTasks] = React.useState([]);
     const [isTasksLoading, setIsTasksLoading] = React.useState(false);
+    const [error, setError] = React.useState('');
 
     const addNewTask = (task) => {
         const sToken = sessionStorage.getItem('token') || localStorage.getItem('token');
 
         setIsTasksLoading(true);
+        setError("");
 
         axios
             .post(`${process.env.REACT_APP_BACKEND_URL}/todos`,
@@ -25,8 +27,11 @@ const TasksProvider = ({ children }) => {
                 setTasks(tasks => [...tasks, response.data]);
             })
             .catch(function (error) {
-                alert('Something went wrong :(');
+                const errMessage =
+                    error?.response?.data?.message ||
+                    'Unexpected error occured. Please, try again later';
                 console.log(error);
+                setError(errMessage);
             }).finally(() => setIsTasksLoading(false));
     }
 
@@ -34,6 +39,7 @@ const TasksProvider = ({ children }) => {
         const sToken = sessionStorage.getItem('token') || localStorage.getItem('token');
 
         setIsTasksLoading(true);
+        setError("");
 
         axios
             .delete(`${process.env.REACT_APP_BACKEND_URL}/todos/${id}`,
@@ -47,8 +53,11 @@ const TasksProvider = ({ children }) => {
                 setTasks(tasks => tasks.filter(task => task.id !== response.data.id));
             })
             .catch(function (error) {
-                alert('Something went wrong :(');
+                const errMessage =
+                    error?.response?.data?.message ||
+                    'Unexpected error occured. Please, try again later';
                 console.log(error);
+                setError(errMessage);
             }).finally(() => setIsTasksLoading(false));
     }
 
@@ -56,6 +65,7 @@ const TasksProvider = ({ children }) => {
         const sToken = sessionStorage.getItem('token') || localStorage.getItem('token');
 
         setIsTasksLoading(true);
+        setError("");
 
         axios
             .patch(`${process.env.REACT_APP_BACKEND_URL}/todos/${id}`, { title: newText },
@@ -71,8 +81,11 @@ const TasksProvider = ({ children }) => {
                 ))
             })
             .catch(function (error) {
-                alert('Something went wrong :(');
+                const errMessage =
+                    error?.response?.data?.message ||
+                    'Unexpected error occured. Please, try again later';
                 console.log(error);
+                setError(errMessage);
             }).finally(() => setIsTasksLoading(false));
     }
 
@@ -80,6 +93,7 @@ const TasksProvider = ({ children }) => {
         const sToken = sessionStorage.getItem('token') || localStorage.getItem('token');
 
         setIsTasksLoading(true);
+        setError("");
 
         axios
             .patch(`${process.env.REACT_APP_BACKEND_URL}/todos/${id}/isCompleted`, undefined,
@@ -95,8 +109,11 @@ const TasksProvider = ({ children }) => {
                 ))
             })
             .catch(function (error) {
-                alert('Something went wrong :(');
+                const errMessage =
+                    error?.response?.data?.message ||
+                    'Unexpected error occured. Please, try again later';
                 console.log(error);
+                setError(errMessage);
             }).finally(() => setIsTasksLoading(false));
     }
 
@@ -104,6 +121,7 @@ const TasksProvider = ({ children }) => {
         const sToken = sessionStorage.getItem('token') || localStorage.getItem('token');
 
         setIsTasksLoading(true);
+        setError("");
 
         axios
             .get(`${process.env.REACT_APP_BACKEND_URL}/todos`, {
@@ -115,13 +133,16 @@ const TasksProvider = ({ children }) => {
                 setTasks(response.data);
             })
             .catch(function (error) {
-                alert('Something went wrong :(');
+                const errMessage =
+                    error?.response?.data?.message ||
+                    'Unexpected error occured. Please, try again later';
                 console.log(error);
+                setError(errMessage);
             }).finally(() => setIsTasksLoading(false));
     }, []);
 
     return (
-        <TasksContext.Provider value={{ tasks, addNewTask, deleteTask, updateTask, completeTask, isTasksLoading }}>
+        <TasksContext.Provider value={{ tasks, addNewTask, deleteTask, updateTask, completeTask, isTasksLoading, error, setError }}>
             {children}
         </TasksContext.Provider>
     )
