@@ -21,15 +21,7 @@ const TodosPage = () => {
                 to="/todooha/login"
                 onClick={handleLogoutPress}
                 component={Typography.Link}
-                style={{
-                    fontSize: '20px',
-                    fontWeight: 700,
-                    textDecoration: 'underline',
-                    letterSpacing: '1px',
-                    display: 'block',
-                    color: 'white',
-                    marginTop: '20px',
-                }}>
+                className='logoutLink'>
                 Log out
             </Link>
         </TasksProvider>

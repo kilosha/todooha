@@ -100,17 +100,11 @@ const RegistrationForm = () => {
                             itemSelectedBg: '#7534ee',
                             itemSelectedColor: '#fff',
                         },
-                        Typography: {
-                            linkDecoration: 'underline',
-                        },
                     },
                 }}>
                 <Form
                     name="basic"
-                    style={{
-                        width: '100%',
-                        paddingTop: '5px',
-                    }}
+                    className="form"
                     initialValues={{
                         remember: true,
                     }}
@@ -210,17 +204,11 @@ const RegistrationForm = () => {
                                 message: 'Please confirm your password!',
                             },
                         ]}>
-                        <InputNumber
-                            changeOnWheel
-                            placeholder="27"
-                            style={{
-                                width: '100%',
-                            }}
-                        />
+                        <InputNumber changeOnWheel placeholder="27" className="formNumberInput" />
                     </FormItem>
 
                     <Form.Item
-                        style={{ paddingTop: '20px' }}
+                        className="btnFormItem"
                         wrapperCol={{
                             span: 10,
                             offset: 7,
@@ -229,7 +217,7 @@ const RegistrationForm = () => {
                             type="primary"
                             htmlType="submit"
                             btnText={'Sign Up'}
-                            style={{ width: '100%' }}
+                            className="formBtn"
                             disabled={!isDirty || !isValid}
                         />
                     </Form.Item>
@@ -239,17 +227,10 @@ const RegistrationForm = () => {
                             span: 8,
                             offset: 8,
                         }}>
-                        <Typography.Text strong className="formText" style={{ fontSize: '16px' }}>
+                        <Typography.Text strong className="formText">
                             Already have an account?{' '}
                         </Typography.Text>
-                        <Link
-                            to="/todooha/login"
-                            component={Typography.Link}
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 600,
-                                textDecoration: 'underline',
-                            }}>
+                        <Link to="/todooha/login" component={Typography.Link} className="signLink">
                             Log In!
                         </Link>
                     </Form.Item>

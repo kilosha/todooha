@@ -75,17 +75,11 @@ const LoginForm = () => {
                             itemSelectedBg: '#7534ee',
                             itemSelectedColor: '#fff',
                         },
-                        Typography: {
-                            linkDecoration: 'underline',
-                        },
                     },
                 }}>
                 <Form
                     name="basic"
-                    style={{
-                        width: '100%',
-                        paddingTop: '5px',
-                    }}
+                    className="form"
                     initialValues={{
                         remember: true,
                     }}
@@ -135,7 +129,7 @@ const LoginForm = () => {
                     </FormItem>
 
                     <Form.Item
-                        style={{ paddingTop: '20px' }}
+                        className="btnFormItem"
                         wrapperCol={{
                             span: 10,
                             offset: 7,
@@ -144,7 +138,7 @@ const LoginForm = () => {
                             type="primary"
                             htmlType="submit"
                             btnText={'Sign In'}
-                            style={{ width: '100%' }}
+                            className="formBtn"
                             disabled={!isDirty || !isValid}
                         />
                     </Form.Item>
@@ -154,17 +148,13 @@ const LoginForm = () => {
                             span: 8,
                             offset: 8,
                         }}>
-                        <Typography.Text strong className="formText" style={{ fontSize: '16px' }}>
+                        <Typography.Text strong className="formText">
                             Don't have an account?{' '}
                         </Typography.Text>
                         <Link
                             to="/todooha/register"
                             component={Typography.Link}
-                            style={{
-                                fontSize: '16px',
-                                fontWeight: 600,
-                                textDecoration: 'underline',
-                            }}>
+                            className="signLink">
                             Sign Up!
                         </Link>
                     </Form.Item>
