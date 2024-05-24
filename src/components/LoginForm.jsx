@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ConfigProvider, Form, Input, Typography, Checkbox } from 'antd';
+import { ConfigProvider, Form, Input, Typography, Checkbox, Alert } from 'antd';
 import { useForm } from 'react-hook-form';
 import { FormItem } from 'react-hook-form-antd';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,6 +17,8 @@ const schema = z.object({
 
 const LoginForm = () => {
     const [requestSuccessfull, setRequestSuccessfull] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [error, setError] = React.useState('');
     const navigate = useNavigate();
 
     const {
@@ -31,6 +33,8 @@ const LoginForm = () => {
 
     const onFinish = (values) => {
         console.log(values);
+        error && setError('');
+        setIsLoading(true);
 
         axios
             .post(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, values)
@@ -41,11 +45,16 @@ const LoginForm = () => {
                 //if remember true set to localStorage, else to sessionStorage
             })
             .catch(function (error) {
-                alert('Something went wrong :(');
-                //show if invalid values
+                const errMessage =
+                    error?.response?.data?.message ||
+                    'Unexpected error occured. Please, try again later';
                 console.log(error);
-            });
+                setError(errMessage);
+            })
+            .finally(() => setIsLoading(false));
     };
+
+    const handleErrorClose = () => setError('');
 
     React.useEffect(() => {
         if (requestSuccessfull) {
@@ -135,6 +144,7 @@ const LoginForm = () => {
                             offset: 7,
                         }}>
                         <MyButton
+                            loading={isLoading}
                             type="primary"
                             htmlType="submit"
                             btnText={'Sign In'}
@@ -160,6 +170,16 @@ const LoginForm = () => {
                     </Form.Item>
                 </Form>
             </ConfigProvider>
+
+            {error && (
+                <Alert
+                    message="Something went wrong:("
+                    description={error}
+                    type="error"
+                    closable
+                    onClose={handleErrorClose}
+                />
+            )}
         </div>
     );
 };
