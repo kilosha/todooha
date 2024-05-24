@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { List, ConfigProvider, Empty } from 'antd';
 
-import TaskItem from './TaskItem';
-import EditTaskItem from './EditTaskItem';
-import Header from './Header';
+import TaskItem from './TaskItem.jsx';
+import EditTaskItem from './EditTaskItem.jsx';
+import Header from './Header.jsx';
 
-import TasksContext from '../contexts/TasksContext.js';
+import TasksContext from '../../contexts/TasksContext.js';
 
 const TodoList = () => {
     const { tasks, isTasksLoading } = useContext(TasksContext);

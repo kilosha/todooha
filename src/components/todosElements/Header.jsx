@@ -1,7 +1,7 @@
 import React from 'react';
 
 import TaskInput from './TaskInput';
-import MyTitle from './MyTitle';
+import MyTitle from '../custom/MyTitle';
 
 const Header = () => {
     return (

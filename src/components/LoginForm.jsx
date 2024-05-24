@@ -7,8 +7,8 @@ import { FormItem } from 'react-hook-form-antd';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
-import MyTitle from './MyTitle';
-import MyButton from './MyButton';
+import MyTitle from './custom/MyTitle';
+import MyButton from './custom/MyButton';
 
 const schema = z.object({
     email: z.string().trim().email('Please provide a valid email'),
@@ -37,7 +37,7 @@ const LoginForm = () => {
             .then(function (response) {
                 setRequestSuccessfull(true);
                 localStorage.setItem('token', response.data.token);
-                navigate('/todooha/todos');
+                navigate('/todooha');
                 //if remember true set to localStorage, else to sessionStorage
             })
             .catch(function (error) {

@@ -14,7 +14,7 @@ function App() {
     return (
         <div className="App">
             <Routes>
-                <Route path="/todooha/todos" element={<PrivateRoute><TodosPage /></PrivateRoute>} />
+                <Route path="/todooha" element={<PrivateRoute><TodosPage /></PrivateRoute>} />
                 <Route path="/todooha/login" element={<LoginForm />} />
                 <Route path="/todooha/register" element={<RegistrationForm />} />
             </Routes>

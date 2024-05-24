@@ -3,7 +3,7 @@ import { Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileCircleCheck, faFileCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
-import TasksContext from '../contexts/TasksContext.js';
+import TasksContext from '../../contexts/TasksContext.js';
 
 const EditTaskItem = ({ title, id, setEditId }) => {
     const [taskText, setTaskText] = React.useState(title);

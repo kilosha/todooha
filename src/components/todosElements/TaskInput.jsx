@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Input, Space } from 'antd';
 
-import TasksContext from '../contexts/TasksContext.js';
-import MyButton from './MyButton.jsx';
+import TasksContext from '../../contexts/TasksContext.js';
+import MyButton from '../custom/MyButton.jsx';
 
 const TaskInput = () => {
     const [task, setTask] = React.useState('');
@@ -35,7 +35,11 @@ const TaskInput = () => {
                     onKeyDown={handleKeyDown}
                     placeholder="What do you need to do?"
                 />
-                <MyButton handleBtnClick={checkAndAddTask} disabled={!task.trim()} btnText={"Add Task"}/>
+                <MyButton
+                    handleBtnClick={checkAndAddTask}
+                    disabled={!task.trim()}
+                    btnText={'Add Task'}
+                />
             </Space.Compact>
         </div>
     );

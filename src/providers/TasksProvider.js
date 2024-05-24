@@ -99,7 +99,7 @@ const TasksProvider = ({ children }) => {
                 alert('Something went wrong :(');
                 console.log(error);
             }).finally(() => setIsTasksLoading(false));
-    }, [])
+    }, []);
 
     return (
         <TasksContext.Provider value={{ tasks, addNewTask, deleteTask, updateTask, completeTask, isTasksLoading }}>
