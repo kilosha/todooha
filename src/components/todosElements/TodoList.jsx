@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { List, ConfigProvider, Empty, Alert } from 'antd';
+import { List, ConfigProvider, Empty, Alert, message } from 'antd';
 
 import TaskItem from './TaskItem.jsx';
 import EditTaskItem from './EditTaskItem.jsx';
@@ -8,7 +8,7 @@ import Header from './Header.jsx';
 import TasksContext from '../../contexts/TasksContext.js';
 
 const TodoList = () => {
-    const { tasks, isTasksLoading, error, setError } = useContext(TasksContext);
+    const { tasks, isTasksLoading, error, setError, contextHolder } = useContext(TasksContext);
     const [editId, setEditId] = React.useState('');
 
     const handleErrorClose = () => setError('');
@@ -34,6 +34,7 @@ const TodoList = () => {
                     },
                 },
             }}>
+            {contextHolder}
             <List
                 className="tasksList"
                 loading={isTasksLoading}
@@ -52,6 +53,7 @@ const TodoList = () => {
                 pagination={{
                     pageSize: 3,
                     align: 'center',
+                    hideOnSinglePage: true,
                 }}
                 footer={
                     error && (
