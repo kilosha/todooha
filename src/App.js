@@ -14,9 +14,9 @@ function App() {
     return (
         <div className="App">
             <Routes>
-                <Route path="/todooha" element={<PrivateRoute><TodosPage /></PrivateRoute>} />
-                <Route path="/todooha/login" element={<LoginForm />} />
-                <Route path="/todooha/register" element={<RegistrationForm />} />
+                <Route path="/" element={<PrivateRoute><TodosPage /></PrivateRoute>} />
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/register" element={<RegistrationForm />} />
             </Routes>
             <Outlet />
         </div>

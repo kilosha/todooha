@@ -19,7 +19,7 @@ const TodosPage = () => {
         <TasksProvider>
             <LoggedTodoList />
             <Link
-                to="/todooha/login"
+                to="/login"
                 onClick={handleLogoutPress}
                 component={Typography.Link}
                 className="logoutLink">

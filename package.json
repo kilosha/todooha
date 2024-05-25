@@ -2,7 +2,7 @@
     "name": "todooha",
     "version": "0.1.0",
     "private": true,
-    "homepage": "http://kilosha.github.io/todooha",
+    "homepage": "http://kilosha.github.io/todo-api",
     "dependencies": {
         "@ctrl/tinycolor": "^4.1.0",
         "@fortawesome/fontawesome-svg-core": "^6.5.2",

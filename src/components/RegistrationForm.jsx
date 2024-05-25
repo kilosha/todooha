@@ -75,7 +75,7 @@ const RegistrationForm = () => {
             alert('User registered successfully');
             reset({ gender: 'male' });
             setRequestSuccessfull(false);
-            navigate('/todooha/login');
+            navigate('/login');
         }
     }, [requestSuccessfull, reset, navigate]);
 
@@ -224,7 +224,7 @@ const RegistrationForm = () => {
                         <Typography.Text strong className="formText">
                             Already have an account?{' '}
                         </Typography.Text>
-                        <Link to="/todooha/login" component={Typography.Link} className="signLink">
+                        <Link to="/login" component={Typography.Link} className="signLink">
                             Log In!
                         </Link>
                     </Form.Item>

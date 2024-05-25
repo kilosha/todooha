@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { List, ConfigProvider, Empty, Alert, message } from 'antd';
+import { List, ConfigProvider, Empty, Alert } from 'antd';
 
 import TaskItem from './TaskItem.jsx';
 import EditTaskItem from './EditTaskItem.jsx';

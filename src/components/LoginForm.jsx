@@ -49,7 +49,7 @@ const LoginForm = () => {
                     sessionStorage.setItem('token', response.data.token);
                 }
 
-                navigate('/todooha');
+                navigate('/');
             })
             .catch((error) => {
                 handleError(error, setError);
@@ -169,7 +169,7 @@ const LoginForm = () => {
                             Don't have an account?{' '}
                         </Typography.Text>
                         <Link
-                            to="/todooha/register"
+                            to="/register"
                             component={Typography.Link}
                             className="signLink">
                             Sign Up!
