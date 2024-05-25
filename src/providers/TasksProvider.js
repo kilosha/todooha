@@ -24,6 +24,7 @@ const TasksProvider = ({ children }) => {
                 messageApi.open({
                     type: 'success',
                     content: 'Task was added successfully',
+                    duration: 2
                 });
             })
             .catch((error) => {
@@ -42,6 +43,7 @@ const TasksProvider = ({ children }) => {
                 messageApi.open({
                     type: 'success',
                     content: 'Task was deleted successfully',
+                    duration: 2
                 });
             })
             .catch((error) => {
@@ -62,6 +64,7 @@ const TasksProvider = ({ children }) => {
                 messageApi.open({
                     type: 'success',
                     content: 'Task was updated successfully',
+                    duration: 2
                 });
             })
             .catch((error) => {
@@ -81,7 +84,8 @@ const TasksProvider = ({ children }) => {
                 ))
                 messageApi.open({
                     type: 'success',
-                    content: 'Task was updated successfully'
+                    content: 'Task was updated successfully', 
+                    duration: 2
                 });
             })
             .catch((error) => {
