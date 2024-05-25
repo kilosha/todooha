@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { ConfigProvider, Form, Input, Segmented, InputNumber, Typography, Alert } from 'antd';
 import { useForm } from 'react-hook-form';
 import { FormItem } from 'react-hook-form-antd';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
+import API from '../apis/user.js';
+import handleError from '../helpers/handleError.js';
 import MyTitle from './custom/MyTitle';
 import MyButton from './custom/MyButton';
 
@@ -57,17 +58,12 @@ const RegistrationForm = () => {
         setIsLoading(true);
         console.log(newUser);
 
-        axios
-            .post(`${process.env.REACT_APP_BACKEND_URL}/users/register`, newUser)
-            .then(function (response) {
+        API.post('/users/register', newUser)
+            .then((response) => {
                 setRequestSuccessfull(true);
             })
-            .catch(function (error) {
-                const errMessage =
-                    error?.response?.data?.message ||
-                    'Unexpected error occured. Please, try again later';
-                console.log(error);
-                setError(errMessage);
+            .catch((error) => {
+                handleError(error, setError);
             })
             .finally(() => setIsLoading(false));
     };

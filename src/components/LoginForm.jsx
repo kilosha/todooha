@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { ConfigProvider, Form, Input, Typography, Checkbox, Alert } from 'antd';
 import { useForm } from 'react-hook-form';
 import { FormItem } from 'react-hook-form-antd';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
+import API from '../apis/user.js';
+import handleError from '../helpers/handleError.js';
 import MyTitle from './custom/MyTitle';
 import MyButton from './custom/MyButton';
 
@@ -38,9 +39,8 @@ const LoginForm = () => {
         error && setError('');
         setIsLoading(true);
 
-        axios
-            .post(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, values)
-            .then(function (response) {
+        API.post('/auth/login', values)
+            .then((response) => {
                 setRequestSuccessfull(true);
 
                 if (getValues('remember')) {
@@ -51,12 +51,8 @@ const LoginForm = () => {
 
                 navigate('/todooha');
             })
-            .catch(function (error) {
-                const errMessage =
-                    error?.response?.data?.message ||
-                    'Unexpected error occured. Please, try again later';
-                console.log(error);
-                setError(errMessage);
+            .catch((error) => {
+                handleError(error, setError);
             })
             .finally(() => setIsLoading(false));
     };
