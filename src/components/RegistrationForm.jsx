@@ -1,19 +1,30 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ConfigProvider, Form, Input, Segmented, InputNumber, Typography } from 'antd';
+import {
+    ConfigProvider,
+    Form,
+    Input,
+    Segmented,
+    InputNumber,
+    Typography,
+    notification,
+    Grid,
+} from 'antd';
 import { useForm } from 'react-hook-form';
 import { FormItem } from 'react-hook-form-antd';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import API from '../apis/user.js';
-import handleError from '../helpers/handleError.js';
+import getErrorMessage from '../helpers/getErrorMessage.js';
 import MyButton from './custom/MyButton';
 import UserSchema from '../helpers/UserSchema.js';
 
-const RegistrationForm = ({ error, setError }) => {
+const RegistrationForm = () => {
     const [requestSuccessfull, setRequestSuccessfull] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
+    const [notificationApi, contextHolder] = notification.useNotification();
     const navigate = useNavigate();
+    const breakpoints = Grid.useBreakpoint();
 
     const {
         control,
@@ -28,7 +39,6 @@ const RegistrationForm = ({ error, setError }) => {
 
     const onFinish = async (values) => {
         const { confirmedPassword, ...newUser } = values;
-        error && setError('');
         setIsLoading(true);
         console.log(newUser);
 
@@ -36,7 +46,10 @@ const RegistrationForm = ({ error, setError }) => {
             await API.post('/users/register', newUser);
             setRequestSuccessfull(true);
         } catch (error) {
-            handleError(error, setError);
+            notificationApi.error({
+                message: 'Something went wrong:(',
+                description: getErrorMessage(error),
+            });
         } finally {
             setIsLoading(false);
         }
@@ -57,6 +70,8 @@ const RegistrationForm = ({ error, setError }) => {
                 components: {
                     Form: {
                         labelColor: '#fff',
+                        labelFontSize: breakpoints.xxl ? 14 : 13,
+                        itemMarginBottom: breakpoints.xxl ? 24 : 13,
                     },
                     Checkbox: {
                         colorText: '#fff',
@@ -70,6 +85,7 @@ const RegistrationForm = ({ error, setError }) => {
                     },
                 },
             }}>
+            {contextHolder}
             <Form
                 name="basic"
                 className="form"
@@ -180,8 +196,8 @@ const RegistrationForm = ({ error, setError }) => {
 
                 <Form.Item
                     wrapperCol={{
-                        span: 8,
-                        offset: 8,
+                        span: breakpoints.xxl ? 8 : 10,
+                        offset: breakpoints.xxl ? 8 : 7,
                     }}>
                     <Typography.Text strong className="formText">
                         Already have an account?{' '}

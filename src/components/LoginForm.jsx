@@ -1,19 +1,21 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ConfigProvider, Form, Input, Typography, Checkbox } from 'antd';
+import { ConfigProvider, Form, Input, Typography, Checkbox, notification, Grid } from 'antd';
 import { useForm } from 'react-hook-form';
 import { FormItem } from 'react-hook-form-antd';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import API from '../apis/user.js';
-import handleError from '../helpers/handleError.js';
+import getErrorMessage from '../helpers/getErrorMessage.js';
 import MyButton from './custom/MyButton';
 import LoginSchema from '../helpers/LoginSchema.js';
 
-const LoginForm = ({ error, setError }) => {
+const LoginForm = () => {
     const [requestSuccessfull, setRequestSuccessfull] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
+    const [notificationApi, contextHolder] = notification.useNotification();
     const navigate = useNavigate();
+    const breakpoints = Grid.useBreakpoint();
 
     const {
         control,
@@ -29,7 +31,6 @@ const LoginForm = ({ error, setError }) => {
 
     const onFinish = async (values) => {
         console.log(values);
-        error && setError('');
         setIsLoading(true);
 
         try {
@@ -44,7 +45,10 @@ const LoginForm = ({ error, setError }) => {
 
             navigate('/');
         } catch (error) {
-            handleError(error, setError);
+            notificationApi.error({
+                message: 'Something went wrong:(',
+                description: getErrorMessage(error),
+            });
         } finally {
             setIsLoading(false);
         }
@@ -64,6 +68,8 @@ const LoginForm = ({ error, setError }) => {
                 components: {
                     Form: {
                         labelColor: '#fff',
+                        labelFontSize: breakpoints.xxl ? 14 : 13,
+                        itemMarginBottom: breakpoints.xxl ? 24 : 13,
                     },
                     Checkbox: {
                         colorText: '#fff',
@@ -77,6 +83,7 @@ const LoginForm = ({ error, setError }) => {
                     },
                 },
             }}>
+            {contextHolder}
             <Form
                 name="basic"
                 className="form"
@@ -133,7 +140,6 @@ const LoginForm = ({ error, setError }) => {
                 </FormItem>
 
                 <Form.Item
-                    className="btnFormItem"
                     wrapperCol={{
                         span: 10,
                         offset: 7,
@@ -150,8 +156,8 @@ const LoginForm = ({ error, setError }) => {
 
                 <Form.Item
                     wrapperCol={{
-                        span: 8,
-                        offset: 8,
+                        span: breakpoints.xxl ? 8 : 10,
+                        offset: breakpoints.xxl ? 8 : 7,
                     }}>
                     <Typography.Text strong className="formText">
                         Don't have an account?{' '}

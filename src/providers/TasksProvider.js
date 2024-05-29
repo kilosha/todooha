@@ -1,19 +1,18 @@
 import React, { useEffect } from 'react';
-import { message } from 'antd';
+import { message, notification } from 'antd';
 
 import API from '../apis/todos.js';
-import handleError from '../helpers/handleError.js';
+import getErrorMessage from '../helpers/getErrorMessage.js';
 import TasksContext from '../contexts/TasksContext.js';
 
 const TasksProvider = ({ children }) => {
     const [tasks, setTasks] = React.useState([]);
     const [isTasksLoading, setIsTasksLoading] = React.useState(false);
-    const [error, setError] = React.useState('');
-    const [messageApi, contextHolder] = message.useMessage();
+    const [messageApi, messageHolder] = message.useMessage();
+    const [notificationApi, notificationHolder] = notification.useNotification();
 
     const addNewTask = async task => {
         setIsTasksLoading(true);
-        error && setError('');
 
         try {
             const response = await API.post('/todos', { title: task });
@@ -24,7 +23,10 @@ const TasksProvider = ({ children }) => {
                 duration: 2
             });
         } catch (error) {
-            handleError(error, setError);
+            notificationApi.error({
+                message: 'Something went wrong:(',
+                description: getErrorMessage(error),
+            });
         } finally {
             setIsTasksLoading(false);
         }
@@ -32,7 +34,6 @@ const TasksProvider = ({ children }) => {
 
     const deleteTask = async id => {
         setIsTasksLoading(true);
-        error && setError('');
 
         try {
             const response = await API.delete(`/todos/${id}`);
@@ -43,7 +44,10 @@ const TasksProvider = ({ children }) => {
                 duration: 2
             });
         } catch (error) {
-            handleError(error, setError);
+            notificationApi.error({
+                message: 'Something went wrong:(',
+                description: getErrorMessage(error),
+            });
         } finally {
             setIsTasksLoading(false);
         }
@@ -51,7 +55,6 @@ const TasksProvider = ({ children }) => {
 
     const updateTask = async (id, newText) => {
         setIsTasksLoading(true);
-        error && setError('');
 
         try {
             const response = await API.patch(`/todos/${id}`, { title: newText });
@@ -64,7 +67,10 @@ const TasksProvider = ({ children }) => {
                 duration: 2
             });
         } catch (error) {
-            handleError(error, setError);
+            notificationApi.error({
+                message: 'Something went wrong:(',
+                description: getErrorMessage(error),
+            });
         } finally {
             setIsTasksLoading(false);
         }
@@ -72,7 +78,6 @@ const TasksProvider = ({ children }) => {
 
     const completeTask = async id => {
         setIsTasksLoading(true);
-        error && setError('');
 
         try {
             const response = await API.patch(`/todos/${id}/isCompleted`);
@@ -85,7 +90,10 @@ const TasksProvider = ({ children }) => {
                 duration: 2
             });
         } catch (error) {
-            handleError(error, setError);
+            notificationApi.error({
+                message: 'Something went wrong:(',
+                description: getErrorMessage(error),
+            });
         } finally {
             setIsTasksLoading(false);
         }
@@ -100,7 +108,10 @@ const TasksProvider = ({ children }) => {
                 const sortedTasks = response.data.sort((a, b) => b.id - a.id);
                 setTasks(sortedTasks);
             } catch (error) {
-                handleError(error, setError);
+                notificationApi.error({
+                    message: 'Something went wrong:(',
+                    description: getErrorMessage(error),
+                });
             } finally {
                 setIsTasksLoading(false);
             }
@@ -108,10 +119,10 @@ const TasksProvider = ({ children }) => {
 
         getTasks();
 
-    }, []);
+    }, [notificationApi]);
 
     return (
-        <TasksContext.Provider value={{ tasks, addNewTask, deleteTask, updateTask, completeTask, isTasksLoading, error, setError, contextHolder }}>
+        <TasksContext.Provider value={{ tasks, addNewTask, deleteTask, updateTask, completeTask, isTasksLoading, messageHolder, notificationHolder }}>
             {children}
         </TasksContext.Provider>
     )

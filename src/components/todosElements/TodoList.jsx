@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { List, ConfigProvider, Empty, Alert } from 'antd';
+import { List, ConfigProvider, Empty } from 'antd';
 
 import TaskItem from './TaskItem.jsx';
 import EditTaskItem from './EditTaskItem.jsx';
@@ -8,10 +8,8 @@ import Header from './Header.jsx';
 import TasksContext from '../../contexts/TasksContext.js';
 
 const TodoList = () => {
-    const { tasks, isTasksLoading, error, setError, contextHolder } = useContext(TasksContext);
     const [editId, setEditId] = React.useState('');
-
-    const handleErrorClose = () => setError('');
+    const { tasks, isTasksLoading, messageHolder, notificationHolder } = useContext(TasksContext);
 
     return (
         <ConfigProvider
@@ -34,7 +32,8 @@ const TodoList = () => {
                     },
                 },
             }}>
-            {contextHolder}
+            {messageHolder}
+            {notificationHolder}
             <List
                 className="tasksList"
                 loading={isTasksLoading}
@@ -55,17 +54,6 @@ const TodoList = () => {
                     align: 'center',
                     hideOnSinglePage: true,
                 }}
-                footer={
-                    error && (
-                        <Alert
-                            message="Something went wrong:("
-                            description={error}
-                            type="error"
-                            closable
-                            onClose={handleErrorClose}
-                        />
-                    )
-                }
             />
         </ConfigProvider>
     );

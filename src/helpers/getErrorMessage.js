@@ -1,9 +1,9 @@
-const handleError = (error, handler) => {
+const getErrorMessage = error => {
     const errMessage =
         error?.response?.data?.message ||
         'Unexpected error occured. Please, try again later';
     console.log(error);
-    handler(errMessage);
+    return errMessage;
 }
 
-export default handleError;
+export default getErrorMessage;
