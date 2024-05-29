@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Typography } from 'antd';
 
-import TodoList from './todosElements/TodoList';
-import withLogger from './withLogger';
+import TodoList from '../components/todosElements/TodoList.jsx';
+import withLogger from '../components/withLogger.jsx';
 
 import TasksProvider from '../providers/TasksProvider.js';
 

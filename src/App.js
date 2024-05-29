@@ -1,13 +1,12 @@
 import React from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
 
-import RegistrationForm from './components/RegistrationForm';
-import LoginForm from './components/LoginForm';
-import PrivateRoute from './components/PrivateRoute';
-import TodosPage from './components/TodosPage';
+import PrivateRoute from './routes/PrivateRoute';
+import TodosPage from './pages/TodosPage';
+import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
 
 import './App.css';
-
 
 function App() {
 
@@ -15,8 +14,8 @@ function App() {
         <div className="App">
             <Routes>
                 <Route path="/" element={<PrivateRoute><TodosPage /></PrivateRoute>} />
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/register" element={<RegistrationForm />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
             </Routes>
             <Outlet />
         </div>

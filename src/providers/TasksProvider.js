@@ -11,100 +11,103 @@ const TasksProvider = ({ children }) => {
     const [error, setError] = React.useState('');
     const [messageApi, contextHolder] = message.useMessage();
 
-    const addNewTask = task => {
+    const addNewTask = async task => {
         setIsTasksLoading(true);
         error && setError('');
 
-        API
-            .post('/todos',
-                { title: task }
-            )
-            .then((response) => {
-                setTasks(tasks => [response.data, ...tasks]);
-                messageApi.open({
-                    type: 'success',
-                    content: 'Task was added successfully',
-                    duration: 2
-                });
-            })
-            .catch((error) => {
-                handleError(error, setError);
-            }).finally(() => setIsTasksLoading(false));
+        try {
+            const response = await API.post('/todos', { title: task });
+            setTasks(tasks => [response.data, ...tasks]);
+            messageApi.open({
+                type: 'success',
+                content: 'Task was added successfully',
+                duration: 2
+            });
+        } catch (error) {
+            handleError(error, setError);
+        } finally {
+            setIsTasksLoading(false);
+        }
     }
 
-    const deleteTask = id => {
+    const deleteTask = async id => {
         setIsTasksLoading(true);
         error && setError('');
 
-        API
-            .delete(`/todos/${id}`)
-            .then((response) => {
-                setTasks(tasks => tasks.filter(task => task.id !== response.data.id));
-                messageApi.open({
-                    type: 'success',
-                    content: 'Task was deleted successfully',
-                    duration: 2
-                });
-            })
-            .catch((error) => {
-                handleError(error, setError);
-            }).finally(() => setIsTasksLoading(false));
+        try {
+            const response = await API.delete(`/todos/${id}`);
+            setTasks(tasks => tasks.filter(task => task.id !== response.data.id));
+            messageApi.open({
+                type: 'success',
+                content: 'Task was deleted successfully',
+                duration: 2
+            });
+        } catch (error) {
+            handleError(error, setError);
+        } finally {
+            setIsTasksLoading(false);
+        }
     }
 
-    const updateTask = (id, newText) => {
+    const updateTask = async (id, newText) => {
         setIsTasksLoading(true);
         error && setError('');
 
-        API
-            .patch(`/todos/${id}`, { title: newText })
-            .then((response) => {
-                setTasks(tasks => tasks.map(task =>
-                    task.id === response.data.id ? response.data : task
-                ))
-                messageApi.open({
-                    type: 'success',
-                    content: 'Task was updated successfully',
-                    duration: 2
-                });
-            })
-            .catch((error) => {
-                handleError(error, setError);
-            }).finally(() => setIsTasksLoading(false));
+        try {
+            const response = await API.patch(`/todos/${id}`, { title: newText });
+            setTasks(tasks => tasks.map(task =>
+                task.id === response.data.id ? response.data : task
+            ))
+            messageApi.open({
+                type: 'success',
+                content: 'Task was updated successfully',
+                duration: 2
+            });
+        } catch (error) {
+            handleError(error, setError);
+        } finally {
+            setIsTasksLoading(false);
+        }
     }
 
-    const completeTask = id => {
+    const completeTask = async id => {
         setIsTasksLoading(true);
         error && setError('');
 
-        API
-            .patch(`/todos/${id}/isCompleted`)
-            .then((response) => {
-                setTasks(tasks => tasks.map(task =>
-                    task.id === response.data[0].id ? response.data[0] : task
-                ))
-                messageApi.open({
-                    type: 'success',
-                    content: 'Task was updated successfully', 
-                    duration: 2
-                });
-            })
-            .catch((error) => {
-                handleError(error, setError);
-            }).finally(() => setIsTasksLoading(false));
+        try {
+            const response = await API.patch(`/todos/${id}/isCompleted`);
+            setTasks(tasks => tasks.map(task =>
+                task.id === response.data[0].id ? response.data[0] : task
+            ))
+            messageApi.open({
+                type: 'success',
+                content: 'Task was updated successfully',
+                duration: 2
+            });
+        } catch (error) {
+            handleError(error, setError);
+        } finally {
+            setIsTasksLoading(false);
+        }
     }
 
     useEffect(() => {
         setIsTasksLoading(true);
 
-        API
-            .get('/todos')
-            .then((response) => {
+        const getTasks = async () => {
+            try {
+                const response = await API.get('/todos');
                 const sortedTasks = response.data.sort((a, b) => b.id - a.id);
                 setTasks(sortedTasks);
-            })
-            .catch((error) => {
+            } catch (error) {
                 handleError(error, setError);
-            }).finally(() => setIsTasksLoading(false));
+            } finally {
+                setIsTasksLoading(false);
+            }
+        }
+
+        getTasks();
+
     }, []);
 
     return (
