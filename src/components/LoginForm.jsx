@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ConfigProvider, Form, Input, Typography, Checkbox, notification, Grid } from 'antd';
+import { Form, Input, Typography, Checkbox, notification, Grid } from 'antd';
 import { useForm } from 'react-hook-form';
 import { FormItem } from 'react-hook-form-antd';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -63,26 +63,7 @@ const LoginForm = () => {
     }, [requestSuccessfull, reset]);
 
     return (
-        <ConfigProvider
-            theme={{
-                components: {
-                    Form: {
-                        labelColor: '#fff',
-                        labelFontSize: breakpoints.xxl ? 14 : 13,
-                        itemMarginBottom: breakpoints.xxl ? 24 : 13,
-                    },
-                    Checkbox: {
-                        colorText: '#fff',
-                        colorPrimary: 'rgba(87, 33, 189, 1)',
-                        colorPrimaryBorder: 'rgba(87, 33, 189, 1)',
-                        colorPrimaryHover: '#742ef7',
-                    },
-                    Segmented: {
-                        itemSelectedBg: '#7534ee',
-                        itemSelectedColor: '#fff',
-                    },
-                },
-            }}>
+        <>
             {contextHolder}
             <Form
                 name="basic"
@@ -167,7 +148,7 @@ const LoginForm = () => {
                     </Link>
                 </Form.Item>
             </Form>
-        </ConfigProvider>
+        </>
     );
 };
 
