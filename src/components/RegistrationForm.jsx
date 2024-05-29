@@ -1,15 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-    ConfigProvider,
-    Form,
-    Input,
-    Segmented,
-    InputNumber,
-    Typography,
-    notification,
-    Grid,
-} from 'antd';
+import { Form, Input, Segmented, InputNumber, Typography, notification, Grid, message } from 'antd';
 import { useForm } from 'react-hook-form';
 import { FormItem } from 'react-hook-form-antd';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,7 +13,8 @@ import UserSchema from '../helpers/UserSchema.js';
 const RegistrationForm = () => {
     const [requestSuccessfull, setRequestSuccessfull] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [notificationApi, contextHolder] = notification.useNotification();
+    const [messageApi, messageHolder] = message.useMessage();
+    const [notificationApi, notificationHolder] = notification.useNotification();
     const navigate = useNavigate();
     const breakpoints = Grid.useBreakpoint();
 
@@ -44,7 +36,16 @@ const RegistrationForm = () => {
 
         try {
             await API.post('/users/register', newUser);
+
+            await messageApi.open({
+                type: 'success',
+                content: 'User was registered successfully',
+                duration: 1,
+            });
+
             setRequestSuccessfull(true);
+
+            navigate('/login');
         } catch (error) {
             notificationApi.error({
                 message: 'Something went wrong:(',
@@ -57,16 +58,15 @@ const RegistrationForm = () => {
 
     React.useEffect(() => {
         if (requestSuccessfull) {
-            alert('User registered successfully');
             reset({ gender: 'male' });
             setRequestSuccessfull(false);
-            navigate('/login');
         }
-    }, [requestSuccessfull, reset, navigate]);
+    }, [requestSuccessfull, reset]);
 
     return (
         <>
-            {contextHolder}
+            {messageHolder}
+            {notificationHolder}
             <Form
                 name="basic"
                 className="form"

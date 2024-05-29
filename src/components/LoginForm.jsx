@@ -13,7 +13,7 @@ import LoginSchema from '../helpers/LoginSchema.js';
 const LoginForm = () => {
     const [requestSuccessfull, setRequestSuccessfull] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [notificationApi, contextHolder] = notification.useNotification();
+    const [notificationApi, notificationHolder] = notification.useNotification();
     const navigate = useNavigate();
     const breakpoints = Grid.useBreakpoint();
 
@@ -56,7 +56,6 @@ const LoginForm = () => {
 
     React.useEffect(() => {
         if (requestSuccessfull) {
-            alert('User logged in successfully');
             reset();
             setRequestSuccessfull(false);
         }
@@ -64,7 +63,7 @@ const LoginForm = () => {
 
     return (
         <>
-            {contextHolder}
+            {notificationHolder}
             <Form
                 name="basic"
                 className="form"
