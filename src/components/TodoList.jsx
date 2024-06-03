@@ -1,15 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { List, ConfigProvider, Empty } from 'antd';
 
 import TaskItem from './TaskItem';
 import EditTaskItem from './EditTaskItem';
 import Header from './Header';
 
-import TasksContext from '../contexts/TasksContext.js';
-
 const TodoList = () => {
-    const { tasks } = useContext(TasksContext);
-    const [editId, setEditId] = React.useState('');
+    const { tasks } = useSelector((state) => state.list);
+    const editId = useSelector((state) => state.editTask.editId);
+
+    useEffect(() => {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }, [tasks]);
 
     return (
         <ConfigProvider
@@ -28,9 +31,9 @@ const TodoList = () => {
                 renderItem={(task) => (
                     <List.Item key={task.id + task.isCompleted}>
                         {task.id !== editId ? (
-                            <TaskItem {...task} setEditId={setEditId} />
+                            <TaskItem {...task} />
                         ) : (
-                            <EditTaskItem title={task.title} id={task.id} setEditId={setEditId} />
+                            <EditTaskItem title={task.title} id={task.id} />
                         )}
                     </List.Item>
                 )}

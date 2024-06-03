@@ -1,11 +1,10 @@
-import React, { useEffect, useContext, useRef } from 'react';
-
-import TasksContext from '../contexts/TasksContext.js';
+import React, { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 const withLogger = (WrappedComponent) => {
     return (props) => {
         const ref = useRef();
-        const { tasks } = useContext(TasksContext);
+        const { tasks } = useSelector((state) => state.list);
 
         useEffect(() => {
             if (ref.current) {

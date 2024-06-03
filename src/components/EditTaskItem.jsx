@@ -1,37 +1,43 @@
-import React, { useContext } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileCircleCheck, faFileCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
-import TasksContext from '../contexts/TasksContext.js';
+import { updateTask } from '../redux/actions/taskActions.js';
+import { setEditId, setTaskText } from '../redux/actions/editModeActions.js';
 
-const EditTaskItem = ({ title, id, setEditId }) => {
-    const [taskText, setTaskText] = React.useState(title);
-    const { updateTask } = useContext(TasksContext);
+const EditTaskItem = ({ title, id }) => {
+    const taskText = useSelector((state) => state.editTask.taskText);
+    const dispatch = useDispatch();
 
     const updateTaskText = (e) => {
-        setTaskText(e.target.value);
+        dispatch(setTaskText(e.target.value));
     };
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             checkAndUpdateTask();
         } else if (event.key === 'Escape') {
-            setEditId('');
+            dispatch(setEditId(''));
         }
     };
 
     const checkAndUpdateTask = () => {
         const formattedTaskText = taskText.trim();
         if (formattedTaskText) {
-            updateTask(id, formattedTaskText);
-            setEditId('');
+            dispatch(updateTask(id, formattedTaskText));
+            dispatch(setEditId(''));
         }
     };
 
     const handleCancelClick = () => {
-        setEditId('');
+        dispatch(setEditId(''));
     };
+
+    useEffect(() => {
+        dispatch(setTaskText(title));
+    }, [dispatch, title]);
 
     return (
         <>
