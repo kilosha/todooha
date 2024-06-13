@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/todooha/static/css/main.5ccc9411.css",
-    "main.js": "/todooha/static/js/main.8a8557b9.js",
+    "main.css": "/todooha/static/css/main.f7329c61.css",
+    "main.js": "/todooha/static/js/main.dcef398f.js",
     "static/media/img.jpg": "/todooha/static/media/img.e4cb8fccec29fe86cee6.jpg",
     "index.html": "/todooha/index.html",
-    "main.5ccc9411.css.map": "/todooha/static/css/main.5ccc9411.css.map",
-    "main.8a8557b9.js.map": "/todooha/static/js/main.8a8557b9.js.map"
+    "main.f7329c61.css.map": "/todooha/static/css/main.f7329c61.css.map",
+    "main.dcef398f.js.map": "/todooha/static/js/main.dcef398f.js.map"
   },
   "entrypoints": [
-    "static/css/main.5ccc9411.css",
-    "static/js/main.8a8557b9.js"
+    "static/css/main.f7329c61.css",
+    "static/js/main.dcef398f.js"
   ]
 }
