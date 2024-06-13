@@ -1,19 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash, faSquareCheck, faSquare } from '@fortawesome/free-solid-svg-icons';
 
-import TasksContext from '../../contexts/TasksContext.js';
+import { fetchCompleteTask, fetchDeleteTasks } from '../../redux/slices/todosSlice.js';
 
 const TaskItem = ({ title, id, isCompleted, setEditId }) => {
-    const { completeTask, deleteTask } = useContext(TasksContext);
+    const dispatch = useDispatch();
 
     const handleEditTaskClick = (id) => {
         setEditId(id);
     };
 
     const handleDeleteTaskClick = (id) => {
-        deleteTask(id);
+        dispatch(fetchDeleteTasks(id));
     };
 
     return (
@@ -21,13 +22,13 @@ const TaskItem = ({ title, id, isCompleted, setEditId }) => {
             <FontAwesomeIcon
                 className="icon"
                 icon={isCompleted ? faSquareCheck : faSquare}
-                onClick={() => completeTask(id)}
+                onClick={() => dispatch(fetchCompleteTask(id))}
             />
 
             <Typography.Text
                 className="taskText"
                 delete={isCompleted}
-                onClick={() => completeTask(id)}>
+                onClick={() => dispatch(fetchCompleteTask(id))}>
                 {title}
             </Typography.Text>
 

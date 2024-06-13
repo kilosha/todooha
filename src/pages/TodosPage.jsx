@@ -5,8 +5,6 @@ import { Typography } from 'antd';
 import TodoList from '../components/todosElements/TodoList.jsx';
 import withLogger from '../components/withLogger.jsx';
 
-import TasksProvider from '../providers/TasksProvider.js';
-
 const TodosPage = () => {
     const LoggedTodoList = withLogger(TodoList);
 
@@ -16,7 +14,7 @@ const TodosPage = () => {
     };
 
     return (
-        <TasksProvider>
+        <>
             <LoggedTodoList />
             <Link
                 to="/login"
@@ -25,7 +23,7 @@ const TodosPage = () => {
                 className="logoutLink">
                 Log out
             </Link>
-        </TasksProvider>
+        </>
     );
 };
 

@@ -1,11 +1,10 @@
-import React, { useEffect, useContext, useRef } from 'react';
-
-import TasksContext from '../contexts/TasksContext.js';
+import React, { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 
 const withLogger = (WrappedComponent) => {
     return (props) => {
         const ref = useRef();
-        const { tasks } = useContext(TasksContext);
+        const { tasks } = useSelector((state) => state.todos);
 
         useEffect(() => {
             if (ref.current) {
@@ -26,14 +25,8 @@ const withLogger = (WrappedComponent) => {
                         return task.id !== tasks[ind]?.id;
                     }).title;
                     console.log(`Пользователь удалил задачу ${deletedTaskText}`);
-                } else if (ref.current.length && ref.current.length + 1 === tasks.length) {
-                    console.log(
-                        `Пользователь добавил новую задачу ${tasks[tasks.length - 1].title}`,
-                    );
                 } else if (ref.current.length + 1 === tasks.length) {
-                    console.log(
-                        `У пользователя 1 задача ${tasks[tasks.length - 1].title}`,
-                    );
+                    console.log(`Пользователь добавил новую задачу ${tasks[0].title}`);
                 }
             }
             ref.current = tasks;

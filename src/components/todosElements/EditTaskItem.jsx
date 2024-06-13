@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileCircleCheck, faFileCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
-import TasksContext from '../../contexts/TasksContext.js';
+import { fetchUpdateTask } from '../../redux/slices/todosSlice';
 
 const EditTaskItem = ({ title, id, setEditId }) => {
     const [taskText, setTaskText] = React.useState(title);
-    const { updateTask } = useContext(TasksContext);
+    const dispatch = useDispatch();
 
     const updateTaskText = (e) => {
         setTaskText(e.target.value);
@@ -24,7 +25,7 @@ const EditTaskItem = ({ title, id, setEditId }) => {
     const checkAndUpdateTask = () => {
         const formattedTaskText = taskText.trim();
         if (formattedTaskText) {
-            updateTask(id, formattedTaskText);
+            dispatch(fetchUpdateTask({ id, newText: formattedTaskText }));
             setEditId('');
         }
     };

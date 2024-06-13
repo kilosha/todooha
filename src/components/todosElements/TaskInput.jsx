@@ -1,12 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Input, Space } from 'antd';
 
-import TasksContext from '../../contexts/TasksContext.js';
 import MyButton from '../custom/MyButton.jsx';
+import { fetchPostTask } from '../../redux/slices/todosSlice.js';
 
 const TaskInput = () => {
     const [task, setTask] = React.useState('');
-    const { addNewTask } = useContext(TasksContext);
+    const dispatch = useDispatch();
 
     const setNewTask = (e) => {
         setTask(e.target.value);
@@ -15,7 +16,7 @@ const TaskInput = () => {
     const checkAndAddTask = () => {
         const formattedTask = task.trim();
         if (formattedTask) {
-            addNewTask(formattedTask);
+            dispatch(fetchPostTask(formattedTask));
             setTask('');
         }
     };

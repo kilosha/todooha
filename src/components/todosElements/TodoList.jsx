@@ -1,15 +1,45 @@
-import React, { useContext } from 'react';
-import { List, ConfigProvider, Empty } from 'antd';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { List, ConfigProvider, Empty, message, notification } from 'antd';
 
 import TaskItem from './TaskItem.jsx';
 import EditTaskItem from './EditTaskItem.jsx';
 import Header from './Header.jsx';
 
-import TasksContext from '../../contexts/TasksContext.js';
+import { fetchGetTasks, resetStatus } from '../../redux/slices/todosSlice.js';
+import getSuccessMessage from '../../helpers/getSuccessMessage.js';
 
 const TodoList = () => {
     const [editId, setEditId] = React.useState('');
-    const { tasks, isTasksLoading, messageHolder, notificationHolder } = useContext(TasksContext);
+    const { tasks, status, errorMsg } = useSelector((state) => state.todos);
+    const dispatch = useDispatch();
+    const [messageApi, messageHolder] = message.useMessage();
+    const [notificationApi, notificationHolder] = notification.useNotification();
+
+    useEffect(() => {
+        if (status === 'failed') {
+            notificationApi.error({
+                message: 'Something went wrong:(',
+                description: errorMsg,
+            });
+        } else if (status && status !== 'loading') {
+            messageApi.open({
+                type: 'success',
+                content: getSuccessMessage(status),
+                duration: 2,
+            });
+        }
+    }, [status, errorMsg, messageApi, notificationApi]);
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetStatus());
+        };
+    }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(fetchGetTasks());
+    }, [dispatch]);
 
     return (
         <ConfigProvider
@@ -36,7 +66,7 @@ const TodoList = () => {
             {notificationHolder}
             <List
                 className="tasksList"
-                loading={isTasksLoading}
+                loading={status === 'loading'}
                 header={<Header />}
                 bordered
                 dataSource={tasks}
