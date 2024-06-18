@@ -4,7 +4,7 @@ import { Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash, faSquareCheck, faSquare } from '@fortawesome/free-solid-svg-icons';
 
-import { fetchCompleteTask, fetchDeleteTasks } from '../../redux/slices/todosSlice.js';
+import { fetchCompleteTask, fetchDeleteTasks } from '../../redux/reducer/todosReducer.js';
 
 const TaskItem = ({ title, id, isCompleted, setEditId }) => {
     const dispatch = useDispatch();

@@ -6,7 +6,7 @@ import TaskItem from './TaskItem.jsx';
 import EditTaskItem from './EditTaskItem.jsx';
 import Header from './Header.jsx';
 
-import { fetchGetTasks, resetStatus } from '../../redux/slices/todosSlice.js';
+import { fetchGetTasks, resetStore, login } from '../../redux/reducer/todosReducer.js';
 import getSuccessMessage from '../../helpers/getSuccessMessage.js';
 
 const TodoList = () => {
@@ -33,12 +33,13 @@ const TodoList = () => {
 
     useEffect(() => {
         return () => {
-            dispatch(resetStatus());
+            dispatch(resetStore());
         };
     }, [dispatch]);
 
     useEffect(() => {
         dispatch(fetchGetTasks());
+        dispatch(login());
     }, [dispatch]);
 
     return (

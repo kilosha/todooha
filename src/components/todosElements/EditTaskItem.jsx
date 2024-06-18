@@ -4,7 +4,7 @@ import { Input } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileCircleCheck, faFileCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
-import { fetchUpdateTask } from '../../redux/slices/todosSlice';
+import { fetchUpdateTask } from '../../redux/reducer/todosReducer.js';
 
 const EditTaskItem = ({ title, id, setEditId }) => {
     const [taskText, setTaskText] = React.useState(title);

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Input, Space } from 'antd';
 
 import MyButton from '../custom/MyButton.jsx';
-import { fetchPostTask } from '../../redux/slices/todosSlice.js';
+import { fetchPostTask } from '../../redux/reducer/todosReducer.js';
 
 const TaskInput = () => {
     const [task, setTask] = React.useState('');
