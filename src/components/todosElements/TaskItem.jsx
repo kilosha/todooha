@@ -1,34 +1,29 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Typography } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash, faSquareCheck, faSquare } from '@fortawesome/free-solid-svg-icons';
 
-import { fetchCompleteTask, fetchDeleteTasks } from '../../redux/reducer/todosReducer.js';
+import { useCompleteTaskMutation, useDeleteTaskMutation } from '../../services/todosServiceApi.js';
 
 const TaskItem = ({ title, id, isCompleted, setEditId }) => {
-    const dispatch = useDispatch();
+    const [completeTask] = useCompleteTaskMutation();
+    const [deleteTask] = useDeleteTaskMutation();
 
-    const handleEditTaskClick = (id) => {
-        setEditId(id);
-    };
-
-    const handleDeleteTaskClick = (id) => {
-        dispatch(fetchDeleteTasks(id));
-    };
+    const handleEditTaskClick = (id) => setEditId(id);
+    const handleDeleteTaskClick = (id) => deleteTask(id);
 
     return (
         <>
             <FontAwesomeIcon
                 className="icon"
                 icon={isCompleted ? faSquareCheck : faSquare}
-                onClick={() => dispatch(fetchCompleteTask(id))}
+                onClick={() => completeTask(id)}
             />
 
             <Typography.Text
                 className="taskText"
                 delete={isCompleted}
-                onClick={() => dispatch(fetchCompleteTask(id))}>
+                onClick={() => completeTask(id)}>
                 {title}
             </Typography.Text>
 

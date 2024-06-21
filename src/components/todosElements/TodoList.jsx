@@ -6,40 +6,36 @@ import TaskItem from './TaskItem.jsx';
 import EditTaskItem from './EditTaskItem.jsx';
 import Header from './Header.jsx';
 
-import { fetchGetTasks, resetStore, login } from '../../redux/reducer/todosReducer.js';
-import getSuccessMessage from '../../helpers/getSuccessMessage.js';
+import { loginLogger, resetStatus } from '../../redux/slices/responsesStateHandlerSlice.js';
+import { useGetTodosQuery } from '../../services/todosServiceApi.js';
 
 const TodoList = () => {
     const [editId, setEditId] = React.useState('');
-    const { tasks, status, errorMsg } = useSelector((state) => state.todos);
+    const { data: tasks } = useGetTodosQuery();
+    const { errorMsg, successMsg, isLoading } = useSelector((state) => state.status);
     const dispatch = useDispatch();
     const [messageApi, messageHolder] = message.useMessage();
     const [notificationApi, notificationHolder] = notification.useNotification();
 
     useEffect(() => {
-        if (status === 'failed') {
+        if (errorMsg) {
             notificationApi.error({
                 message: 'Something went wrong:(',
                 description: errorMsg,
             });
-        } else if (status && status !== 'loading') {
+            dispatch(resetStatus());
+        } else if (successMsg) {
             messageApi.open({
                 type: 'success',
-                content: getSuccessMessage(status),
+                content: successMsg,
                 duration: 2,
             });
+            dispatch(resetStatus());
         }
-    }, [status, errorMsg, messageApi, notificationApi]);
+    }, [messageApi, notificationApi, errorMsg, successMsg, dispatch]);
 
     useEffect(() => {
-        return () => {
-            dispatch(resetStore());
-        };
-    }, [dispatch]);
-
-    useEffect(() => {
-        dispatch(fetchGetTasks());
-        dispatch(login());
+        dispatch(loginLogger());
     }, [dispatch]);
 
     return (
@@ -67,7 +63,7 @@ const TodoList = () => {
             {notificationHolder}
             <List
                 className="tasksList"
-                loading={status === 'loading'}
+                loading={isLoading}
                 header={<Header />}
                 bordered
                 dataSource={tasks}

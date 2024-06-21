@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+
+import { useGetTodosQuery } from '../services/todosServiceApi';
 
 const withLogger = (WrappedComponent) => {
     return (props) => {
         const ref = useRef();
-        const { tasks } = useSelector((state) => state.todos);
+        const { data: tasks } = useGetTodosQuery();
 
         useEffect(() => {
             if (ref.current) {

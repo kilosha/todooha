@@ -1,8 +1,7 @@
-const getErrorMessage = error => {
+const getErrorMessage = payload => {
     const errMessage =
-        error?.response?.data?.message ||
+        payload?.data?.message ||
         'Unexpected error occured. Please, try again later';
-    console.log(error);
     return errMessage;
 }
 
